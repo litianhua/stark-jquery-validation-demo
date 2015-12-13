@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>stark-jquery-validation-demo</title>
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <style type="text/css">
+      .form {
+        max-width: 330px;
+        padding: 15px;
+        margin: 0 auto;
+      }
+      .error {
+        color: red;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <!-- 操作点 -->
+      <div>
+        <span style="color: green;">会员信息录入操作点：</span>
+        <button id="addNode" class="btn btn-primary" type="button" style="width: 30%;margin: 10px 2.5% 10px 2.5%;">新增</button>
+        <button id="modifyNode" class="btn btn-primary" type="button" style="width: 30%;margin: 10px 2.5% 10px 2.5%;">修改</button>
+      </div>
+
+      <div id="divNode" style="border-style: dashed;padding: 10px;display: none;">
+        <form id="memberFormNode" class="form-horizontal">
+            <h4 class="form-signin-heading" style="text-align: center;">会员信息</h4>
+            <!-- 表单元素 -->
+            <div class="form-group">
+                <label for="loginName" class="col-sm-2 control-label">登录名：</label>
+                <div class="col-sm-10">
+                    <input id="loginName" name="loginName" type="text" class="form-control" placeholder="登录名" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="pwd" class="col-sm-2 control-label">密码：</label>
+                <div class="col-sm-10">
+                    <input id="pwd" name="pwd" type="password" class="form-control" placeholder="密码" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="confirmPwd" class="col-sm-2 control-label">确认密码：</label>
+                <div class="col-sm-10">
+                    <input id="confirmPwd" name="confirmPwd" type="password" class="form-control" placeholder="确认密码">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="nickName" class="col-sm-2 control-label">昵称：</label>
+                <div class="col-sm-10">
+                    <input id="nickName" name="nickName" type="text" class="form-control" placeholder="昵称" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="email" class="col-sm-2 control-label">邮箱：</label>
+                <div class="col-sm-10">
+                    <input id="email" name="email" type="text" class="form-control" placeholder="邮箱" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="blogUrl" class="col-sm-2 control-label">个人博客地址</label>
+                <div class="col-sm-10">
+                    <input id="blogUrl" name="blogUrl" type="text" class="form-control" placeholder="个人博客地址" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="birthday" class="col-sm-2 control-label">出生年月：</label>
+                <div class="col-sm-10">
+                    <input id="birthday" name="birthday" type="text" class="form-control" placeholder="出生年月" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="creditcard" class="col-sm-2 control-label">信用卡：</label>
+                <div class="col-sm-10">
+                    <input id="creditcard" name="creditcard" type="text" class="form-control" placeholder="信用卡" />
+                </div>
+            </div>
+            <button class="btn btn-primary" style="width: 30%;margin-left: 65%;" type="submit">提交</button>
+        </form>
+      </div>
+    </div>
+  </body>
+<!-- js -->
+<script type="text/javascript" src="build/jquery-1.10.0.js"></script>
+<script type="text/javascript" src="build/jquery.validate-1.13.1.js"></script>
+<script type="text/javascript" src="js/comm.js"></script>
+<script type="text/javascript">
+//声明Validator对象
+var validator;
+$(document).ready(function () {
+    //初始化Validator对象
+    validator = $('#memberFormNode').validate({
+        rules:{
+            loginName: {
+                required: true,
+                minlength: 6,
+                maxlength: 15
+            },
+            pwd: {
+                required: true,
+                minlength: 2,
+                maxlength: 16
+            },
+            confirmPwd: {
+                equalTo: "#pwd"
+            },
+            nickName: {
+                required: true,
+                rangelength: [6,15]
+            },
+            email: {
+                email: true
+            },
+            blogUrl: {
+                url: true
+            },
+            birthday: {
+                dateISO: true
+            },
+            creditcard: {
+                creditcard: true
+            }
+        },
+        messages: {
+            loginName: {
+                required: "必须填写登录名！",
+                minlength: "登录名最小长度为6位！",
+                maxlength: "登录名最大长度为15位！",
+                remote: "登录名已存在！"
+            },
+            pwd: {
+                required: "必须填写密码！",
+                minlength: "密码长度最小为2位！",
+                maxlength: "密码长度最大为16位！"
+            },
+            confirmPwd: {
+                equalTo: "两次输入的密码不一致！"
+            },
+            nickName: {
+                required: "必须填写昵称！",
+                rangelength: "昵称长度应该在6-15位之间！"
+            },
+            email: {
+                email: "请输入正确格式的电子邮件！"
+            },
+            blogUrl: {
+                url: "请输入合法的网址！"
+            },
+            birthday: {
+                dateISO: "请输入正确的日期格式！"
+            },
+            creditcard: {
+                creditcard: "请输入正确的信用卡号！"
+            }
+        },
+        submitHandler: function (form) {
+            //下面可以向服务端提交数据
+            console.log($(form).serialize());
+            console.log($(form).toArray());
+        }
+
+    });
+
+    $("#addNode").click(function(event) {
+        //恢复表单的验证状态
+        validator.resetForm();
+        //新增时需要验证服务端的数据，所以此时需要添加rule规则
+        $("#loginName").rules("add",{
+            remote: {
+                url: "checkName.json",
+                type:"post",
+                dataType:"json",
+                data:{
+                    loginName: function(){
+                        return jQuery("#loginName").val();
+                    }
+                }
+            }
+        });    
+        //重置表单
+        document.getElementById("memberFormNode").reset();
+        //设置登录名恢复为可填写
+        $("#loginName").removeAttr('readOnly');
+        //显示表单
+        $("#divNode").css('display', 'block');
+    });
+
+    $("#modifyNode").click(function(event) {
+        //恢复表单的验证状态
+        validator.resetForm();
+        //修改时不需要验证服务端的数据，所以此时需要去除rule规则，当然此处只是将前端的验证去除了，服务端最好还是要验证处理的
+        $("#loginName").rules("remove","remote");
+        //重置表单
+        document.getElementById("memberFormNode").reset();
+        //设置登录名为只读
+        $("#loginName").attr('readOnly', 'true');
+        //获取数据并填入表单
+        $.getJSON('getMember.json', {}, function(json, textStatus) {
+            //设置相关参数
+            $("#loginName").val(json.loginName);
+            $("#nickName").val(json.nickName);
+            $("#blogUrl").val(json.blogUrl);
+            $("#email").val(json.email);
+        });
+        //显示表单
+        $("#divNode").css('display', 'block');
+    });
+
+});
+</script>
+</html>

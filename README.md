@@ -1,4 +1,5 @@
 # stark-jquery-validation-demo
 jQuery表单验证插件Validation的使用.
 
-文章链接：http://www.litianhua.net/blog/jquery-validation.html
+## 项目创建
+- 文章：[jQuery表单验证插件Validation的使用.](hhttp://www.litianhua.net/blog/jquery-validation.html)
